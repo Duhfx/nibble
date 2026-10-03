@@ -7,7 +7,7 @@
   },
   "plugins": [
     {
-      "name": "nibble",
+      "name": "nibble-context",
       "source": "./",
       "description": "A pixel art pet that lives above your prompt, feeds on your code and shows your session usage at a glance."
     }

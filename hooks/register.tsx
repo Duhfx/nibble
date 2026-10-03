@@ -6,10 +6,10 @@ import { STRINGS } from './i18n'
 import { HUES, PET_WIDTH, USAGE_WIDTH, heat, petPanel, usagePanel } from './band'
 import { ACCENT, cells, sprite, svg } from './sprites'
 
-const pet = atom({ plugin: 'nibble', key: 'pet' } as const, null)
-const flash = atom({ plugin: 'nibble', key: 'flash' } as const, null)
-const frame = atom({ plugin: 'nibble', key: 'frame' } as const, 0)
-const usage = atom({ plugin: 'nibble', key: 'usage' } as const, null)
+const pet = atom({ plugin: 'nibble-context', key: 'pet' } as const, null)
+const flash = atom({ plugin: 'nibble-context', key: 'flash' } as const, null)
+const frame = atom({ plugin: 'nibble-context', key: 'frame' } as const, 0)
+const usage = atom({ plugin: 'nibble-context', key: 'usage' } as const, null)
 
 const HATCH = 15
 // ponytail: thresholds tuned for ~500 tool calls/day: adult day 1, master ~1 week, legend ~6 weeks, then a star every ~10 days.

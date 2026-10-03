@@ -26,6 +26,6 @@ export type NibbleFlash = { mood: NibbleMood; id: number }
 
 declare module 'claude-code' {
   interface PluginState {
-    nibble: { pet: NibblePet | null; flash: NibbleFlash | null; frame: number; usage: NibbleUsage | null }
+    'nibble-context': { pet: NibblePet | null; flash: NibbleFlash | null; frame: number; usage: NibbleUsage | null }
   }
 }

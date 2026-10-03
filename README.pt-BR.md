@@ -26,7 +26,7 @@ Por este repositório, como marketplace:
 
 ```
 /plugin marketplace add Duhfx/nibble
-/plugin install nibble@nibble
+/plugin install nibble-context@nibble
 ```
 
 Ou carregue um clone local por uma sessão:

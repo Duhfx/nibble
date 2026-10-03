@@ -1,5 +1,6 @@
 {
-  "name": "nibble",
+  "name": "nibble-context",
+  "displayName": "Nibble Context",
   "version": "0.1.0",
   "description": "A pixel art pet that lives above your prompt, feeds on your code and shows your session usage at a glance.",
   "author": {
