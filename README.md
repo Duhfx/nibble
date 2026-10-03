@@ -4,11 +4,10 @@
 
 A pixel art pet that lives in the band above your Claude Code prompt. It eats your edits, cheers when your tests pass, worries when your context fills up, and grows over weeks of use. Next to it, the band shows your session's context and usage limits at a glance.
 
-```
-[pet]  Clawdy ★★  master · lv 58  tests are green! what a day ✨        started 09:12   ↻ 16:20         ↻ thu 14:00
-       ♥ mood    🍗 food    ⚡ energy   ✨ xp 🌟                          context  19%   5h limit  68%   weekly limit  22%
-       ▬▬▬▬──    ▬▬▬───     ▬▬▬▬▬      ▬▬───                            ▬▬───────      ▬▬▬▬▬▬───       ▬▬───────
-```
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/band-dark.svg">
+  <img alt="The Nibble band above the prompt: the pet with its meters on the left, context and usage limits on the right" src="assets/band-light.svg" width="100%">
+</picture>
 
 ## Features
 
@@ -69,6 +68,8 @@ All meters go from 0 to 100. Only actions taken inside Claude Code count.
 ### ✨ XP
 - **+3** per passing test, **+1** per file edit, **+1** per other shell command. Failing tests give nothing.
 - XP never goes down. The level is the square root of your XP.
+
+<p align="center"><img alt="Evolution stages: egg, baby, adult, master, legend" src="assets/stages.svg" width="600"></p>
 
 | Stage | XP |
 | --- | --- |

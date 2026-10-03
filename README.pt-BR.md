@@ -4,11 +4,10 @@
 
 Um bichinho em pixel art que mora na faixa acima do prompt do Claude Code. Ele come suas edições, comemora quando os testes passam, fica preocupado quando o contexto enche e cresce ao longo de semanas de uso. Ao lado dele, a faixa mostra o contexto e os limites de uso da sessão num relance.
 
-```
-[bicho]  Clawdy ★★  mestre · nv 58  testes verdes! que dia lindo ✨     início 09:12   ↻ 16:20         ↻ qui 14:00
-         ♥ humor   🍗 comida   ⚡ energia   ✨ xp 🌟                     contexto 19%   limite 5h 68%   limite semanal 22%
-         ▬▬▬▬──    ▬▬▬───      ▬▬▬▬▬       ▬▬───                       ▬▬───────      ▬▬▬▬▬▬───       ▬▬───────
-```
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/band-dark.svg">
+  <img alt="A faixa do Nibble acima do prompt: o bichinho com seus medidores à esquerda, contexto e limites de uso à direita" src="assets/band-light.svg" width="100%">
+</picture>
 
 ## Funcionalidades
 
@@ -69,6 +68,8 @@ Todos os medidores vão de 0 a 100. Só contam ações feitas dentro do Claude C
 ### ✨ XP
 - **+3** por teste que passa, **+1** por edição de arquivo, **+1** por outro comando de shell. Teste falhando não dá nada.
 - O xp nunca diminui. O nível é a raiz quadrada do xp.
+
+<p align="center"><img alt="Estágios de evolução: ovo, bebê, adulto, mestre, lenda" src="assets/stages.svg" width="600"></p>
 
 | Estágio | XP |
 | --- | --- |
