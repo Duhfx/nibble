@@ -42,11 +42,17 @@ let flashes = 0
 
 async function refreshUsage($: EngineInterface) {
   const u = await $.session.usage()
+  const now = await $.clock.now()
+  const saved = ((await $.store.get('limits')) ?? {}) as Record<string, NibbleUsage['session']>
   const limit = (kind: string) => {
     const r = u.rateLimits.find(l => l.kind === kind)
-    return r && { percent: r.percentUsed, resetsAt: r.resetsAt }
+    if (r) return { percent: r.percentUsed, resetsAt: r.resetsAt }
+    // A new session learns its limits only with its first response: until then, show the last known ones that haven't reset.
+    const last = saved[kind]
+    return last?.resetsAt && Date.parse(last.resetsAt) > now ? last : undefined
   }
   const next: NibbleUsage = { startedAt: u.startedAt, context: u.context.percent, session: limit('five_hour'), week: limit('seven_day') }
+  if (u.rateLimits.length > 0) await $.store.set('limits', { five_hour: next.session, seven_day: next.week })
   await update($, usage, () => next)
 }
 
