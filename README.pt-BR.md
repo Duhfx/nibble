@@ -15,6 +15,7 @@ Um bichinho em pixel art que mora na faixa acima do prompt do Claude Code. Ele c
 - **Ele se alimenta do seu trabalho.** Edições de arquivo e comandos de shell alimentam, testes passando deixam feliz, erros e testes falhando deixam preocupado.
 - **Uma evolução longa.** Ovo → bebê → adulto → mestre (com coroa) → lenda (pelagem perolada e brilhos) → estrelas sem fim. Calibrada para quem usa muito continuar alcançando marcos por meses.
 - **Uso da sessão num relance.** Ocupação do contexto, limite de 5h e limite semanal, com horários de reset e o início da sessão. As barras ficam âmbar acima de 60% e vermelhas acima de 85%.
+- **Vai dar até o reset?** Cada limite mostra o horário de reset (`↻ 16:20`) e, se no seu ritmo médio desde o início da janela ele acabar antes, quando esgota (`⚠ 14:58`, em vermelho). Uma marquinha na barra indica onde estaria um ritmo uniforme.
 - **Ele te avisa.** Com o contexto em 80% o bichinho pede um `/compact`; com um limite de uso em 90% ele fica cansado.
 - **Seu bichinho, seu nome.** Renomeie com `/nibble-name`.
 - **Português e inglês.** Troque com `/nibble-lang`.

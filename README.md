@@ -15,6 +15,7 @@ A pixel art pet that lives in the band above your Claude Code prompt. It eats yo
 - **It feeds on your work.** File edits and shell commands feed it, passing tests make it happy, errors and failing tests worry it.
 - **A long evolution.** Egg → baby → adult → master (with a crown) → legend (pearly coat and sparkles) → endless stars. Tuned so heavy users keep reaching new milestones for months.
 - **Session usage at a glance.** Context window fill, 5-hour limit and weekly limit, with reset times and the session start. Bars turn amber past 60% and red past 85%.
+- **Will you make it to the reset?** Each limit shows its reset time (`↻ 16:20`) and, if your average pace since the window opened would use it up first, when it runs out (`⚠ 14:58`, in red). A tick on the bar marks where an even pace would be.
 - **It warns you.** When context reaches 80% the pet asks for a `/compact`; when a usage limit reaches 90% it gets tired.
 - **Your pet, your name.** Rename it with `/nibble-name`.
 - **English and Portuguese.** Switch with `/nibble-lang`.

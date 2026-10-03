@@ -211,10 +211,23 @@ export const register: Register = on => {
       const d = new Date(iso)
       return `↻ ${withDay ? `${t.days[d.getDay()]} ` : ''}${clock(d)}`
     }
+    const now = await $.clock.now()
+    // At the average pace since the window opened: where usage "should" be now, and when it would hit 100%.
+    const limitMeter = (label: string, l: NonNullable<NibbleUsage['session']>, length: number, withDay: boolean) => {
+      const ends = l.resetsAt ? Date.parse(l.resetsAt) : NaN
+      const elapsed = now - (ends - length)
+      if (Number.isNaN(ends) || elapsed <= 0) return { label, percent: l.percent, wide: true, caption: resets(l.resetsAt, withDay) }
+      const pace = (elapsed / length) * 100
+      // ponytail: linear projection from the window's average; ignored in its first 10%, where a few calls swing it wildly.
+      const runsOutAt = l.percent > 0 && pace >= 10 ? now + (elapsed * (100 - l.percent)) / l.percent : Infinity
+      if (runsOutAt >= ends) return { label, percent: l.percent, pace, wide: true, caption: resets(l.resetsAt, withDay) }
+      const d = new Date(runsOutAt)
+      return { label, percent: l.percent, pace, wide: true, caption: resets(l.resetsAt, withDay), warn: t.runsOut.replace('{t}', `${withDay ? `${t.days[d.getDay()]} ` : ''}${clock(d)}`) }
+    }
     const usageMeters = u === null ? [] : [
       ...(u.context === undefined ? [] : [{ label: t.context, percent: u.context, caption: `${t.started} ${clock(new Date(u.startedAt))}` }]),
-      ...(u.session ? [{ label: t.session, percent: u.session.percent, caption: resets(u.session.resetsAt, false) }] : []),
-      ...(u.week ? [{ label: t.week, percent: u.week.percent, caption: resets(u.week.resetsAt, true) }] : []),
+      ...(u.session ? [limitMeter(t.session, u.session, 5 * 60 * MINUTE, false)] : []),
+      ...(u.week ? [limitMeter(t.week, u.week, 7 * 24 * 60 * MINUTE, true)] : []),
     ].map(m => ({ ...m, color: heat(m.percent), value: `${Math.round(m.percent)}%` }))
 
     if (e.surface === 'desktop') {
@@ -252,11 +265,12 @@ export const register: Register = on => {
       art = <Raster key="pet" columns={18} rows={9} cells={cells(sprite(pose), lift, shift)} />
     }
 
-    const meterText = (m: { label: string; percent: number; color: string; value?: string; caption?: string }) => (
+    const meterText = (m: { label: string; percent: number; color: string; value?: string; caption?: string; warn?: string }) => (
       <Text>
         <Text dimColor>{m.label} </Text>
         <Text color={m.color}>{bar(m.percent)}{m.value ? ` ${m.value}` : ''}</Text>
         {m.caption && <Text dimColor> {m.caption}</Text>}
+        {m.warn && <Text color="#e5484d" bold> {m.warn}</Text>}
         <Text>   </Text>
       </Text>
     )

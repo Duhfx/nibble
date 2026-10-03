@@ -18,6 +18,7 @@ type Strings = {
   energy: string
   started: string
   days: string[]
+  runsOut: string
 }
 
 export const STRINGS: Record<NibbleLang, Strings> = {
@@ -46,6 +47,7 @@ export const STRINGS: Record<NibbleLang, Strings> = {
     food: '🍗 comida',
     energy: '⚡ energia',
     started: 'início',
+    runsOut: '⚠ {t}',
     days: ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'],
   },
   en: {
@@ -73,6 +75,7 @@ export const STRINGS: Record<NibbleLang, Strings> = {
     food: '🍗 food',
     energy: '⚡ energy',
     started: 'started',
+    runsOut: '⚠ {t}',
     days: ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'],
   },
 }
