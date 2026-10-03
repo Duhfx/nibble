@@ -172,21 +172,62 @@ export function sprite(pose: Pose): Grid {
 }
 
 const DEFAULT = 0x01000000
-const SHADOW = 0x2c2a40
 
-// Terminal: an 18x18 canvas (sprite, bob and shadow) packed two pixels per cell with half blocks.
-export function cells(art: Grid, lift: number, shift: number): string {
-  const canvas: Grid = Array.from({ length: 18 }, () => Array(18).fill(null))
-  const half = lift ? 4 : 5
-  for (let x = 9 - half; x < 9 + half; x++) canvas[17][x] = SHADOW
-  art.forEach((line, y) => line.forEach((c, x) => {
-    if (c !== null) canvas[1 + y - lift][1 + x + shift] = c
-  }))
+// Terminal: 8x6 versions of each form, three rows tall, so the band matches the desktop's height.
+const MINI: Record<Form, string[]> = {
+  egg: [
+    '...oo...',
+    '..ohbo..',
+    '.ohbbao.',
+    '.obabbo.',
+    '.osbbso.',
+    '..oooo..',
+  ],
+  baby: [
+    '....Y...',
+    '..oooo..',
+    '.obbbbo.',
+    'obkbbkbo',
+    'ocbkkbco',
+    '.oooooo.',
+  ],
+  adult: [
+    '.o....o.',
+    'ocooooco',
+    'obkbbkbo',
+    'ocbkkbco',
+    'osbbbbso',
+    '.oo..oo.',
+  ],
+}
 
-  const words = new Uint32Array(18 * 9 * 3)
+export function mini(pose: Pose): Grid {
+  const rows = MINI[formOf(pose.stage)].map(line => [...line])
+  const m = pose.mood
+  if (pose.stage !== 'egg') {
+    const eyes = pose.stage === 'baby' ? 3 : 2
+    if (m === 'sleep' || m === 'sad' || pose.blink) rows[eyes][2] = rows[eyes][5] = 's'
+    const mouth = m === 'happy' || (m === 'eating' && pose.chomp) ? 'm' : m === 'sleep' || m === 'sad' ? 'b' : 'k'
+    rows[eyes + 1][3] = rows[eyes + 1][4] = mouth
+    if (!(m === 'ok' || m === 'happy' || m === 'eating')) rows[eyes + 1][1] = rows[eyes + 1][6] = 'b'
+    if (m === 'worried') rows[0][7] = 't'
+    if (pose.stage === 'baby' && !pose.spark) rows[0][4] = 'y'
+    if (pose.stage === 'master' || pose.stage === 'legend') stamp(rows, ['yYYy'], 2, 0)
+  } else if (pose.cracks) {
+    rows[1][4] = 'o'
+  }
+  const palette = { ...INK, ...PALETTES[pose.stage] }
+  return rows.map(line => line.map(ch => (ch === '.' ? null : palette[ch])))
+}
+
+// Packs a grid two pixels per cell with half blocks.
+export function cells(canvas: Grid): string {
+  const columns = canvas[0].length
+  const rows = canvas.length / 2
+  const words = new Uint32Array(columns * rows * 3)
   let i = 0
-  for (let r = 0; r < 9; r++) {
-    for (let x = 0; x < 18; x++) {
+  for (let r = 0; r < rows; r++) {
+    for (let x = 0; x < columns; x++) {
       const top = canvas[2 * r][x]
       const bottom = canvas[2 * r + 1][x]
       if (top === null && bottom === null) words.set([0x20, DEFAULT, DEFAULT], i)

@@ -4,7 +4,7 @@ import type { EngineInterface, Register } from 'claude-code'
 import type { NibbleMood, NibblePet, NibbleStage, NibbleUsage } from '../types'
 import { STRINGS } from './i18n'
 import { HUES, PET_WIDTH, USAGE_WIDTH, heat, petPanel, usagePanel } from './band'
-import { ACCENT, cells, sprite, svg } from './sprites'
+import { ACCENT, cells, mini, sprite, svg } from './sprites'
 
 const pet = atom({ plugin: 'nibble-context', key: 'pet' } as const, null)
 const flash = atom({ plugin: 'nibble-context', key: 'flash' } as const, null)
@@ -36,7 +36,6 @@ function moodOf(p: NibblePet, flashed: NibbleMood | undefined, now: number): Nib
   return 'ok'
 }
 
-const bar = (n: number) => '▰'.repeat(Math.round(n / 20)) + '▱'.repeat(5 - Math.round(n / 20))
 
 let flashes = 0
 
@@ -258,36 +257,48 @@ export const register: Register = on => {
     if (e.surface === 'terminal') {
       const { Raster } = $.ui.resolve(e)
       const f = await read($, frame)
-      const pace = mood === 'sleep' ? 3 : mood === 'happy' || mood === 'eating' ? 0 : 1
-      const lift = (f >> pace) & 1
-      const shift = stage === 'egg' && cracks && f % 6 < 2 ? (f % 2 ? 1 : -1) : 0
-      const pose = { stage, mood, blink: f % 12 === 0, chomp: f % 2 === 0, spark: !e.props.isWorking || f % 2 === 0, cracks, twinkle: ((f >> 1) & 1) as 0 | 1 }
-      art = <Raster key="pet" columns={18} rows={9} cells={cells(sprite(pose), lift, shift)} />
+      const pose = { stage, mood, blink: f % 12 === 0, chomp: f % 2 === 0, spark: !e.props.isWorking || f % 2 === 0, cracks }
+      art = <Raster key="pet" columns={8} rows={3} cells={cells(mini(pose))} />
     }
 
-    const meterText = (m: { label: string; percent: number; color: string; value?: string; caption?: string; warn?: string }) => (
-      <Text>
-        <Text dimColor>{m.label} </Text>
-        <Text color={m.color}>{bar(m.percent)}{m.value ? ` ${m.value}` : ''}</Text>
-        {m.caption && <Text dimColor> {m.caption}</Text>}
-        {m.warn && <Text color="#e5484d" bold> {m.warn}</Text>}
-        <Text>   </Text>
-      </Text>
-    )
+    // Each meter is a column, as on the desktop: an optional caption, the label and value, then the bar.
+    const column = (m: { label: string; percent: number; color: string; value?: string; caption?: string; warn?: string }, segments: number) => {
+      const filled = Math.round((Math.max(0, Math.min(100, m.percent)) / 100) * segments)
+      return (
+        <Box flexDirection="column" marginRight={3}>
+          {m.caption !== undefined && (
+            <Text wrap="truncate">
+              <Text dimColor>{m.caption}</Text>
+              {m.warn && <Text color="#e5484d" bold>  {m.warn}</Text>}
+            </Text>
+          )}
+          <Text wrap="truncate">
+            <Text dimColor>{m.label}</Text>
+            {m.value && <Text color={m.color} bold> {m.value}</Text>}
+          </Text>
+          <Text>
+            <Text color={m.color}>{'▰'.repeat(filled)}</Text>
+            <Text dimColor>{'▱'.repeat(segments - filled)}</Text>
+          </Text>
+        </Box>
+      )
+    }
 
     return (
-      <Box flexDirection="row" gap={2} paddingX={1} alignItems="center">
-        {art}
-        <Box flexDirection="column" flexGrow={1}>
-          <Text wrap="truncate">
-            <Text bold color={accent}>{p.name}</Text>
-            {starText && <Text color="#e0a020"> {starText}</Text>}
-            <Text color={accent}>  {badge}  </Text>
-            <Text italic dimColor>{phrase}</Text>
-          </Text>
-          <Text wrap="truncate">{petMeters.map(meterText)}</Text>
-          {e.props.bodyColumns >= 100 && usageMeters.length > 0 && <Text wrap="truncate">{usageMeters.map(meterText)}</Text>}
+      <Box flexDirection="row" flexWrap="wrap" justifyContent="space-between" paddingX={1}>
+        <Box flexDirection="row" gap={2}>
+          {art}
+          <Box flexDirection="column">
+            <Text wrap="truncate">
+              <Text bold color={accent}>{p.name}</Text>
+              {starText && <Text color="#e0a020"> {starText}</Text>}
+              <Text color={accent}>  {badge}  </Text>
+              <Text italic dimColor>{phrase}</Text>
+            </Text>
+            <Box flexDirection="row">{petMeters.map(m => column(m, 6))}</Box>
+          </Box>
         </Box>
+        {usageMeters.length > 0 && <Box flexDirection="row">{usageMeters.map(m => column(m, 10))}</Box>}
       </Box>
     )
   })
