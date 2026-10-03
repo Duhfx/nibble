@@ -1,0 +1,15 @@
+{
+  "name": "nibble",
+  "description": "Nibble, a pixel art pet for Claude Code",
+  "owner": {
+    "name": "Eduardo Farias",
+    "url": "https://github.com/Duhfx"
+  },
+  "plugins": [
+    {
+      "name": "nibble",
+      "source": "./",
+      "description": "A pixel art pet that lives above your prompt, feeds on your code and shows your session usage at a glance."
+    }
+  ]
+}

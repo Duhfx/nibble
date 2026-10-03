@@ -1,0 +1,21 @@
+{
+  "name": "nibble",
+  "version": "0.1.0",
+  "description": "A pixel art pet that lives above your prompt, feeds on your code and shows your session usage at a glance.",
+  "author": {
+    "name": "Eduardo Farias",
+    "url": "https://github.com/Duhfx"
+  },
+  "homepage": "https://github.com/Duhfx/nibble",
+  "repository": "https://github.com/Duhfx/nibble",
+  "keywords": [
+    "tamagotchi",
+    "pet",
+    "pixel-art",
+    "gamification",
+    "mod",
+    "usage",
+    "context"
+  ],
+  "types": "./types/index.d.ts"
+}
