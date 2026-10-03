@@ -93,6 +93,19 @@ Vale a primeira regra que se aplicar:
 6. **Feliz** com humor acima de 75.
 7. **De boa** nos outros casos.
 
+## O que os hooks fazem
+
+O Nibble é um mod: um módulo de function hooks (`hooks/register.tsx`). Todo hook repassa o evento sem alterá-lo; nenhum bloqueia, reescreve ou atrasa nada do que você ou o Claude fazem.
+
+| Hook | O que faz |
+| --- | --- |
+| `session.start` | Carrega o bichinho do armazenamento do plugin, aplica o tempo em que você ficou fora, registra `/nibble-name` e `/nibble-lang` e inicia dois timers: o quadro da animação (a cada 400 ms) e o tique de cada minuto (fome, energia, humor, atualização do uso). |
+| `prompt.submit` | Dá um pouco de humor e marca você como ativo. O texto do prompt não é lido nem alterado. |
+| `tool.call` | Deixa a ferramenta rodar e depois olha o nome dela e se deu certo (e, em comandos de shell, o texto do comando para reconhecer testes) para atualizar comida, humor, energia e xp. A chamada e o resultado seguem intactos. |
+| `turn.complete` | Atualiza os números de contexto e de limites de uso, os mesmos da status line. |
+| `command.run` | Responde a `/nibble-name` e `/nibble-lang`. |
+| `ui.render` (`AbovePrompt`) | Desenha a faixa acima do prompt. Sai da frente quando uma pesquisa usa a faixa. |
+
 ## Privacidade
 
 O Nibble roda localmente. Ele só olha qual ferramenta rodou e se deu certo (e o texto do comando de shell, para reconhecer testes). O estado fica no armazenamento de plugins do Claude Code, na sua máquina. Nada é enviado para lugar nenhum.

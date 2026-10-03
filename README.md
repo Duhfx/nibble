@@ -93,6 +93,19 @@ The first rule that applies wins:
 6. **Happy** when mood is above 75.
 7. **Chilling** otherwise.
 
+## What the hooks do
+
+Nibble is a mod: a module of function hooks (`hooks/register.tsx`). Each hook passes the event on unchanged; none blocks, rewrites or delays anything you or Claude do.
+
+| Hook | What it does |
+| --- | --- |
+| `session.start` | Loads your pet from the plugin store, applies the time you were away, registers `/nibble-name` and `/nibble-lang`, and starts two timers: the animation frame (every 400 ms) and the minute tick (hunger, energy, mood drift, usage refresh). |
+| `prompt.submit` | Adds a little mood and marks you as active. The prompt text is not read or changed. |
+| `tool.call` | Lets the tool run, then looks at its name and whether it succeeded (and, for shell commands, the command text to spot tests) to update food, mood, energy and XP. The call and its result are passed on untouched. |
+| `turn.complete` | Refreshes the context and usage-limit figures, the same ones the status line shows. |
+| `command.run` | Answers `/nibble-name` and `/nibble-lang`. |
+| `ui.render` (`AbovePrompt`) | Draws the band above the prompt. It steps aside while a survey uses the band. |
+
 ## Privacy
 
 Nibble runs locally. It only looks at which tool ran and whether it succeeded (plus the shell command text, to spot tests). Its state lives in Claude Code's plugin store on your machine. Nothing is sent anywhere.

@@ -8,6 +8,7 @@
   },
   "homepage": "https://github.com/Duhfx/nibble",
   "repository": "https://github.com/Duhfx/nibble",
+  "license": "MIT",
   "keywords": [
     "tamagotchi",
     "pet",
@@ -16,6 +17,5 @@
     "mod",
     "usage",
     "context"
-  ],
-  "types": "./types/index.d.ts"
+  ]
 }
